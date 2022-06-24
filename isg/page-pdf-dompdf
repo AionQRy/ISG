@@ -1,0 +1,100 @@
+<?php
+/**
+ * template name: PDF
+ *
+ * This is the template that displays all pages by default.
+ * Please note that this is the WordPress construct of pages
+ * and that other 'pages' on your WordPress site may use a
+ * different template.
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package paradiz
+ */
+require 'vendor/autoload.php';
+// // reference the Dompdf namespace
+use Dompdf\Dompdf;
+$dompdf = new Dompdf();
+$options = $dompdf->getOptions();
+$options->setDefaultFont('THSarabunNew');
+$dompdf->setOptions($options);
+ob_start();
+?>
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<style>
+/* Load font */
+
+@font-face {
+           font-family: 'THSarabunNew';
+           font-style: normal;
+           font-weight: normal;
+           src: url("<?php echo get_stylesheet_directory_uri(); ?>/vendor/fonts/THSarabunNew.ttf") format('truetype');
+       }
+       @font-face {
+           font-family: 'THSarabunNew';
+           font-style: normal;
+           font-weight: bold;
+           src: url("<?php echo get_stylesheet_directory_uri(); ?>/vendor/fonts/THSarabunNew Bold.ttf") format('truetype');
+       }
+       @font-face {
+           font-family: 'THSarabunNew';
+           font-style: italic;
+           font-weight: normal;
+           src: url("<?php echo get_stylesheet_directory_uri(); ?>/vendor/fonts/THSarabunNew Italic.ttf") format('truetype');
+       }
+       @font-face {
+           font-family: 'THSarabunNew';
+           font-style: italic;
+           font-weight: bold;
+           src: url("<?php echo get_stylesheet_directory_uri(); ?>/vendor/fonts/THSarabunNew BoldItalic.ttf") format('truetype');
+       }
+
+
+/* Override font */
+body {
+	font-family: 'THSarabunNew'!important;
+  color: #222;
+}
+</style>
+<body>
+  <section class="sheet padding-20mm" id="pdf">
+
+    <article>
+      <h2>from:</h2>
+      <p>บริษัท โค๊ดบี จำกัด</p>
+
+      <h3>For:</h3>
+      <p>บริษัท แฮปปี้ แคท เฮ้า จำกัด</p>
+
+      <h4>1,000THB</h4>
+      <ul>
+        <li>Tax: included</li>
+        <li>Paid by: cash</li>
+        <li>No. 00001</li>
+        <li>Oct 10, 2017</li>
+      </ul>
+    </article>
+
+  </section>
+<?php
+	$output_string = ob_get_contents();
+	ob_end_clean();
+	// return $output_string;
+ // $dompdf->loadHtml($output_string, 'UTF-8');
+  $dompdf->loadHtml('ทดสอบ', 'UTF-8');
+// (Optional) Setup the paper size and orientation
+$dompdf->setPaper('A4', 'portrait');
+
+// Render the HTML as PDF
+$dompdf->render();
+
+// Output the generated PDF to Browser
+$dompdf->stream();
+// get_header();
+?>
+
+<?php ///get_footer(); ?>
